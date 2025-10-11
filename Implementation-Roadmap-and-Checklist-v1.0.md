@@ -11,22 +11,22 @@ This roadmap is divided into three major phases: **Foundation**, **Automation Bu
 *The goal of this phase is to build and configure all the core infrastructure.*
 
 ### 1.1 PostgreSQL Database Setup
-- [ ] **Deploy PostgreSQL Server:** Ensure a stable PostgreSQL instance is running and accessible.
-- [ ] **Create Database:** Run the SQL command to create the `phoenix_db` database.
-- [ ] **Create User:** Run the SQL command to create the `phoenix_user` and grant all necessary privileges to `phoenix_db`.
-- [ ] **Execute Schema Script:** Run the final SQL script to create all four master tables: `master_contacts`, `agents`, `routing_rules`, and `assignments`.
-- [ ] **Initial Data Population:**
-    - [ ] Populate the `agents` table with the initial list of all participating agents, including their correct `ghl_user_id` and `ghl_location_id`.
-    - [ ] Populate the `routing_rules` table with the initial project/location rules for each team.
+- [x] **Deploy PostgreSQL Server:** Ensure a stable PostgreSQL instance is running and accessible.
+- [x] **Create Database:** Run the SQL command to create the `phoenix_db` database.
+- [x] **Create User:** Run the SQL command to create the `phoenix_user` and grant all necessary privileges to `phoenix_db`.
+- [x] **Execute Schema Script:** Run the final SQL script to create all four master tables: `master_contacts`, `agents`, `routing_rules`, and `assignments`.
+- [x] **Initial Data Population:**
+    - [x] Populate the `agents` table with the initial list of all participating agents, including their correct `ghl_user_id` and `ghl_location_id`.
+    - [x] Populate the `routing_rules` table with the initial project/location rules for each team.
 
 ### 1.2 n8n Controller Setup
-- [ ] **Install Server Prerequisites:** Install Docker and Docker Compose on the Hostinger VPS.
-- [ ] **Create Project Directory:** Create the `n8n-phoenix` directory on the server.
-- [ ] **Create `docker-compose.yml` File:** Create the file with the correct configuration.
-- [ ] **Create and Secure `.env` File:** Create the `.env` file and populate it with all database credentials and the n8n subdomain.
-- [ ] **Launch n8n Container:** Run `docker-compose up -d` to start the n8n instance.
-- [ ] **Configure DNS & SSL:** Point your n8n subdomain's DNS A record to the server IP and ensure SSL (HTTPS) is correctly configured.
-- [ ] **Create n8n Credentials:** Inside the n8n UI, create a separate "Header Auth" credential for each GHL sub-account's API key.
+- [x] **Install Server Prerequisites:** Install Docker and Docker Compose on the Hostinger VPS.
+- [x] **Create Project Directory:** Create the `n8n-phoenix` directory on the server.
+- [x] **Create `docker-compose.yml` File:** Create the file with the correct configuration.
+- [x] **Create and Secure `.env` File:** Create the `.env` file and populate it with all database credentials and the n8n subdomain.
+- [x] **Launch n8n Container:** Run `docker-compose up -d` to start the n8n instance.
+- [x] **Configure DNS & SSL:** Point your n8n subdomain's DNS A record to the server IP and ensure SSL (HTTPS) is correctly configured.
+- [x] **Create n8n Credentials:** Inside the n8n UI, create a separate "Header Auth" credential for each GHL sub-account's API key.
 
 ### 1.3 GHL Sub-Account Configuration
 *(This entire section must be repeated for **EACH** participating GHL sub-account)*
