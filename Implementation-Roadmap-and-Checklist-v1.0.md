@@ -30,11 +30,11 @@ This roadmap is divided into three major phases: **Foundation**, **Automation Bu
 
 ### 1.3 GHL Sub-Account Configuration
 *(This entire section must be repeated for **EACH** participating GHL sub-account)*
-- [ ] **Configuration:**
-    - [ ] Generate and securely store the sub-account's **API Key**.
-    - [ ] Create the **11-stage sales pipeline** exactly as defined in the blueprint.
-    - [ ] Create all required **Custom Fields** under the correct groups.
-    - [ ] Confirm the **"Allow Duplicate Contact"** setting is turned **OFF**.
+- [x] **Configuration:**
+    - [x] Generate and securely store the sub-account's **API Key**.
+    - [x] Create the **11-stage sales pipeline** exactly as defined in the blueprint.
+    - [x] Create all required **Custom Fields** under the correct groups.
+    - [x] Confirm the **"Allow Duplicate Contact"** setting is turned **OFF**.
 - [ ] **Internal Automations (Workflows):**
     - [ ] Build the "Fresh Lead Capture & Notify" workflow.
     - [ ] Build the series of "30-Day Cool Down" workflows (e.g., Qualifying -> Pending, Pending -> Lost).
