@@ -1,8 +1,9 @@
-# Project Phoenix: System Proposal & Architectural Blueprint (v6.0)
+# Project Phoenix: The Definitive Blueprint (v7.0 FINAL)
 * **Date:** October 12, 2025
 * **Status:** Final Blueprint - Awaiting Implementation
+* **Authored By:** Gemini, in collaboration with the Project Visionary
 
-## Part 1: Project Proposal & Executive Summary
+## Part 1: The Vision - Project Proposal
 
 ### 1.1 Project Objectives
 Project Phoenix is a strategic initiative designed to revolutionize the lead management process for a high-velocity, competitive real estate sales environment. The primary objectives are to:
@@ -11,23 +12,18 @@ Project Phoenix is a strategic initiative designed to revolutionize the lead man
 * **Track** the responsiveness, activity, and success of hundreds of competing agents with data-driven precision.
 * **Facilitate** a high-pace, "royal rumble" business model, where speed-to-action is paramount and the most effective agents are rewarded.
 
-### 1.2 Executive Summary
-Project Phoenix is a three-part automated system designed to manage a competitive lead marketplace. It uses **GoHighLevel (GHL)** as the agent-facing "arena," a central **PostgreSQL** database as the "master record," and a self-hosted **n8n** instance as the intelligent "referee" that enforces the rules of the game.
+### 1.2 The Core Philosophy: The "Royal Rumble"
+This system is built to support a unique and aggressive business model. Unlike a traditional CRM that nurtures leads within a single team, Project Phoenix creates a competitive marketplace. A lead that stalls with one agent is not considered "dead"; it is a fresh opportunity for another. The system is designed to create, manage, and officiate this competition, ensuring that every lead is given the maximum number of chances to be closed by the most motivated and effective agent. Speed, persistence, and skill are the keys to victory.
 
-The core philosophy is the **"Simultaneous Competition" Protocol**. Leads are dispatched to agents for a limited time. If progress isn't made, the opportunity is cloned and dispatched to a *new* agent, allowing multiple, independent agents to compete for the same lead. The first agent to advance the lead to the "Pre-Booking" stage wins, and the system automatically closes the opportunity for all other competitors. This creates maximum urgency and increases the probability of a sale.
-
-### 1.3 Key Performance Indicators (KPIs)
-The success of Project Phoenix will be measured by:
-* **Lead Velocity:** The time it takes for a returned lead to be re-dispatched to a new agent.
-* **Agent Engagement Rate:** The percentage of leads actioned by agents before the first timer expires.
-* **Close Rate per Agent:** The ultimate measure of an agent's effectiveness within the system.
+### 1.3 Executive Summary
+Project Phoenix is a three-part automated system. It uses **GoHighLevel (GHL)** as the agent-facing "arena," a central **PostgreSQL** database as the "master record," and a self-hosted **n8n** instance as the intelligent "referee." The system's engine is the **"Simultaneous Competition" Protocol**, where multiple agents can be assigned to the same lead over time, creating a high-urgency environment. The first agent to advance a lead to the "Pre-Booking" stage wins, and the system automatically closes the opportunity for all other competitors.
 
 ---
-## Part 2: System Architecture & Technology
+## Part 2: The Ecosystem - Architecture & Technology
 
 ### 2.1 The Three Pillars
 * **PostgreSQL (The Master Record 🏛️):** The robust, central database. It is the single source of truth for every person, every assignment, and all business rules.
-* **n8n (The Referee 🧠):** The central brain. n8n executes all logic: dispatching leads, checking timers, managing competition, prioritizing opportunities, and updating the database.
+* **n8n (The Referee 🧠):** The central brain. n8n executes all logic: registering new leads, dispatching opportunities, checking timers, managing competition, and updating the database.
 * **GHL (The Arena 🥊):** The agent's workspace. Each agent/team operates in their own GHL sub-account where they manage their assigned leads through the sales pipeline.
 
 ### 2.2 Technology Stack
@@ -36,85 +32,93 @@ The success of Project Phoenix will be measured by:
 * **CRM:** GoHighLevel (GHL)
 
 ---
-## Part 3: The GHL Arena - Pipeline & Configuration
+## Part 3: The Complete Lead Lifecycle
 
-### 3.1 The Sales Pipeline Stages
-This 11-stage pipeline provides a granular view of the lead's journey.
+This is the detailed, moment-by-moment journey of a lead in the Project Phoenix system.
 
-| Stage # | Stage Name | Purpose |
-| :--- | :--- | :--- |
-| 1 | **New Lead** | Freshly assigned leads land here. |
-| 2 | **Contacting** | Agent is actively attempting first contact. |
-| 3 | **Qualifying** | Active financial assessment and needs analysis. |
-| 4 | **Pending** | Lead has gone silent or is unresponsive. |
-| 5 | **Incomplete** | Lead is providing documents, but they are incomplete. |
-| 6 | **Joint-Loan** | A joint-loan application is being explored. |
-| 7 | **Pre-Booking** | **The "Win" stage.** Documents are complete and submitted to ERP. |
-| 8 | **Confirmed Booking**| ERP system has confirmed the booking. |
-| 9 | **Won - Confirmed Sales**| The final stage for a successful deal. |
-| 10 | **Lost** | Agent has manually lost the lead, or the system has closed it. |
-| 11 | **Unqualified** | Lead is deemed unqualified but may become qualified in the future. |
+### 3.1 Genesis: The Fresh Lead Flow
+This is the *only* entry point for brand-new leads.
+1.  **Capture (In GHL):** A team leader's ad (Meta, TikTok) generates a lead. GHL's native integration captures the contact directly inside the team's specific sub-account.
+2.  **Internal GHL Automation:** An internal GHL workflow triggers instantly. It tags the contact (`lead_type:fresh`), sets the source, and assigns it to an agent within that team.
+3.  **Notify the Referee:** The final step of the GHL workflow is to call a webhook, sending the new contact's data to the n8n controller.
+4.  **Register in Master DB:** n8n receives the webhook and creates the permanent record in the PostgreSQL `master_contacts` table and a new entry in the `assignments` table, officially starting the 48-hour timer.
 
-### 3.2 Core GHL Automations
-The following workflows must be configured *within* GHL:
-* **Note Automation:** Every time a lead is moved from one stage to another automatically, an internal note must be added (e.g., "System: Moved contact to Pending stage due to inactivity.").
-* **30-Day Cool Down Timers:** For leads in stages 3, 4, 5, and 6, a 30-day "Wait" step is required. If the lead is still in that stage after 30 days, it is automatically moved to the next "cool down" stage (e.g., Qualifying -> Pending, Pending -> Lost).
+### 3.2 The First Round: Exclusive Window (Stages 1 & 2)
+* **Timer:** A strict **48-hour** timer is active.
+* **Capacity:** An agent's combined lead count in these two stages cannot exceed **60**.
+* **If Timer Expires:** The n8n "Janitor" workflow detects the expired assignment. It updates the Master DB, making the lead available for re-dispatch as a "Recycled Lead." The original agent's copy of the lead begins its 30-day "cool down" journey inside their GHL.
 
----
-## Part 4: The Core Logic - The "Royal Rumble" Engine
+### 3.3 The Rumble: Simultaneous Competition (Stages 3-6)
+* **Timer:** A **10-day** "progress" timer is active in the Qualifying, Pending, Incomplete, and Joint-Loan stages.
+* **The Action:** If the 10-day timer expires, the lead is sent back to the Master DB pool for re-dispatch to a *new* agent.
+* **The Competition:** The original agent's lead remains active in their pipeline. At this point, two or more agents can be actively working on the same lead in their respective GHL accounts.
 
-This is the operational heart of Project Phoenix.
+### 3.4 The Finish Line: The "Win" Condition & Referee Protocol 🏆
+1.  **The Trigger:** An agent successfully moves a lead to **Stage 7: Pre-Booking**.
+2.  **The Referee Acts:** The n8n "Referee" workflow catches this via a real-time webhook.
+3.  **Declare Winner:** n8n locks in the winning agent in the `assignments` table in the Master DB.
+4.  **End the Race:** n8n immediately sends API commands to the GHL accounts of all other competing agents to **automatically move their version of the lead to Stage 10: Lost** and adds a system note: *"Opportunity closed by another representative."*
 
-### 4.1 The "Simultaneous Competition" Protocol
-The system is designed to allow multiple agents to work the same lead if it is not closed within the initial timeframes. This maximizes opportunities and rewards the most effective closers.
+### 3.5 The Surrender: Manual "Lost" Trigger
+* If an agent manually moves a lead to the "Lost" stage, a webhook fires to the n8n Referee.
+* n8n instantly updates the Master DB, making the lead available for immediate re-circulation. This ensures maximum lead velocity.
 
-### 4.2 Phase 1: Exclusive Assignment (Stages 1 & 2)
-* **Timer:** A strict **48-hour** timer is active in these stages.
-* **Capacity:** Distribution is limited by a combined capacity of **60 leads** across these two stages. An agent at capacity will not receive their daily quota of 30 leads.
-* **Action:** If the 48-hour timer expires, the lead's data is sent to the Master DB to be re-dispatched to a new agent. The original agent's lead begins its "Cool Down" lifecycle (moving to Pending after 30 days, then Lost).
-
-### 4.3 Phase 2: The Rumble Begins (Stages 3, 4, 5, 6)
-* **Timer:** A **10-day** "progress" timer is active in these stages.
-* **Action:** If the 10-day timer expires without the lead moving forward, the lead's data is sent to the Master DB for re-dispatch. The original agent's lead remains active, and a new agent now enters the competition.
-
-### 4.4 The "Win" Condition & Referee Protocol 🏆
-This is the rule that governs the end of the race.
-1.  When any agent moves a lead into **Stage 7: Pre-Booking**, a real-time trigger fires to the n8n Referee.
-2.  n8n instantly locks in the winning agent in the Master DB.
-3.  n8n immediately sends commands to the GHL accounts of **all other competing agents** who have an active version of this lead.
-4.  The command automatically moves the lead to the **Stage 10: Lost** for all non-winning competitors and adds a system note: *"Opportunity closed by another representative."*
-
-### 4.5 Lead Priority System
-Recycled leads are not treated equally. A `priority_level` will be set in the database upon return.
-* **Priority 1 (Hottest):** Leads returned from Stages 3-6 (Qualifying, Pending, etc.).
-* **Priority 2 (Warm):** Leads returned from Stage 2 (Contacting).
-* **Priority 3 (Cold):** Leads returned from Stage 1 (New Lead).
-The daily distribution workflow will always dispatch the highest-priority leads first.
+### 3.6 The Priority System
+Recycled leads are prioritized to ensure the most valuable opportunities are worked first.
+* **Priority 1 (Hottest):** Returned from Stages 3-6 (Qualifying, etc.)
+* **Priority 2 (Warm):** Returned from Stage 2 (Contacting)
+* **Priority 3 (Cold):** Returned from Stage 1 (New Lead)
 
 ---
-## Part 5: The Master Database - PostgreSQL Schema
+## Part 4: The Arena - GHL Configuration
 
-* **Table: `master_contacts`:** The master record of every unique person (identified by phone number).
-* **Table: `agents`:** The roster of all competing agents and their GHL IDs.
-* **Table: `routing_rules`:** The logic for assigning leads to specific teams (e.g., based on location).
-* **Table: `assignments`:** The active state machine. This table tracks every single assignment of a contact to an agent, including its current `status` (`Active`, `Won`, `Lost`), the GHL stage, and timer deadlines. This is the referee's scorecard.
+### 4.1 The Sales Pipeline
+| Stage # | Stage Name |
+| :--- | :--- |
+| 1 | New Lead |
+| 2 | Contacting |
+| 3 | Qualifying |
+| 4 | Pending |
+| 5 | Incomplete |
+| 6 | Joint-Loan |
+| 7 | **Pre-Booking (Win Stage)** |
+| 8 | Confirmed Booking |
+| 9 | Won - Confirmed Sales |
+| 10| Lost |
+| 11| Unqualified |
+
+### 4.2 Essential GHL Automations
+The following workflows must be built *inside each* GHL sub-account:
+* **Fresh Lead Capture & Notify:** Captures from ads, tags, assigns internally, and calls the n8n webhook.
+* **Auto-Note on Stage Change:** Adds a system note whenever a lead is moved automatically.
+* **30-Day Cool Down Timers:** A series of workflows that move leads from `Qualifying` -> `Pending` -> `Lost` if they remain inactive for 30 days in each stage.
 
 ---
-## Part 6: The n8n Controller - Workflow Blueprints
+## Part 5: The n8n Controller - Workflow Blueprints
 
-To execute this logic, four core workflows will be built in n8n.
+Four core workflows must be built in n8n to run the system.
 
-* **Workflow A: Real-Time Fresh Lead Ingestion:** Captures new leads, logs them, and performs the initial "check-out" to an agent.
-* **Workflow B: The Morning Dispatch:** The daily scheduled workflow that runs at 12:10 AM. It checks agent capacity, prioritizes recycled leads, and distributes the daily quota.
-* **Workflow C: The Real-Time Referee:** A webhook-based workflow that listens for stage changes in GHL. It is responsible for enforcing the "Win" condition.
-* **Workflow D: The Timer & Status Janitor:** A scheduled workflow that runs frequently (e.g., every hour) to check for expired timers in the `assignments` table and trigger the re-dispatch process.
+* **Workflow A: Real-Time Registrar:** A webhook-triggered workflow that listens for new Fresh Leads from GHL and registers them in the Master DB.
+* **Workflow B: The Morning Dispatch:** A scheduled workflow (runs at 12:10 AM) that checks agent capacity and distributes all available "Recycled Leads" based on the priority system.
+* **Workflow C: The Real-Time Referee:** A webhook-triggered workflow that listens for stage changes. It enforces the "Win" condition and handles "Manual Lost" surrenders.
+* **Workflow D: The Timer & Status Janitor:** A scheduled workflow that runs frequently (e.g., every hour) to find assignments with expired timers and trigger the re-dispatch process.
 
 ---
-## Conclusion & Next Steps
+## Part 6: The Master Record - PostgreSQL Schema
 
-This document outlines a complete, robust, and powerful system designed specifically for a high-velocity, competitive sales environment. It provides clear tracking, creates urgency, and rewards performance.
+* **Table: `master_contacts`:** The master record of every unique person. Key columns: `contact_id`, `phone`, `email`, `lead_type` (`Fresh`/`Recycle`), `priority_level`.
+* **Table: `agents`:** The roster of all competing agents. Key columns: `agent_id`, `agent_name`, `ghl_user_id`, `team_id`, `is_active`.
+* **Table: `routing_rules`:** Defines which teams get leads based on certain criteria (e.g., location).
+* **Table: `assignments`:** The referee's scorecard. Tracks every assignment of a contact to an agent. Key columns: `assignment_id`, `contact_id` (FK), `agent_id` (FK), `status` (`Active`/`Won`/`Lost`), `current_stage`, `timer_expires_at`.
 
-The next phase is **Implementation**. The immediate next steps are:
-1.  Set up the PostgreSQL database with the defined schema.
-2.  Configure the GHL sub-accounts with the specified pipeline and custom fields.
-3.  Begin development of the n8n workflows, starting with Workflow A.
+---
+## Part 7: Implementation Roadmap
+
+1.  **Phase 1: Foundation (Setup)**
+    * Deploy the PostgreSQL database and create the schema.
+    * Configure all GHL sub-accounts with the pipeline, fields, and internal automations.
+2.  **Phase 2: Automation Build (Development)**
+    * Build, test, and deploy the four core n8n workflows in sequence.
+3.  **Phase 3: Go-Live (Deployment)**
+    * Perform end-to-end system testing with a pilot team.
+    * Full rollout to all teams.
