@@ -35,28 +35,28 @@ This roadmap is divided into three major phases: **Foundation**, **Automation Bu
     - [x] Create the **11-stage sales pipeline** exactly as defined in the blueprint.
     - [x] Create all required **Custom Fields** under the correct groups.
     - [x] Confirm the **"Allow Duplicate Contact"** setting is turned **OFF**.
-- [ ] **Internal Automations (Workflows):**
-    - [ ] Build the "Fresh Lead Capture & Notify" workflow.
-    - [ ] Build the series of "30-Day Cool Down" workflows (e.g., Qualifying -> Pending, Pending -> Lost).
+- [x] **Internal Automations (Workflows):**
+    - [x] Build the "Fresh Lead Capture & Notify" workflow.
+    - [x] Build the series of "30-Day Cool Down" workflows (e.g., Qualifying -> Pending, Pending -> Lost).
 
 ---
 ## Phase 2: Automation Build (Development) 🧠
 *The goal of this phase is to build the four core n8n workflows that run the system.*
 
 ### 2.1 Workflow A: Real-Time Registrar
-- [ ] Build the webhook-triggered workflow logic.
-- [ ] Test by submitting a lead through a connected GHL ad form.
-- [ ] Verify the lead is correctly created in the `master_contacts` and `assignments` tables.
+- [x] Build the webhook-triggered workflow logic.
+- [x] Test by submitting a lead through a connected GHL ad form.
+- [x] Verify the lead is correctly created in the `master_contacts` and `assignments` tables.
 
 ### 2.2 Workflow D: The Timer & Status Janitor
-- [ ] Build the scheduled workflow logic that queries the `assignments` table for expired timers.
-- [ ] Test by manually setting a `timer_expires_at` value in the database to a past date and running the workflow.
-- [ ] Verify the lead's `priority_level` is correctly updated in `master_contacts`.
+- [x] Build the scheduled workflow logic that queries the `assignments` table for expired timers.
+- [x] Test by manually setting a `timer_expires_at` value in the database to a past date and running the workflow.
+- [x] Verify the lead's `priority_level` is correctly updated in `master_contacts`.
 
 ### 2.3 Workflow B: The Morning Dispatch
-- [ ] Build the scheduled workflow logic (reads rules, gets priority leads, checks capacity, assigns).
-- [ ] Test with a sample set of "Recycled" leads in the database.
-- [ ] Verify leads are correctly assigned to the right agents in GHL and the `assignments` table is updated.
+- [x] Build the scheduled workflow logic (reads rules, gets priority leads, checks capacity, assigns).
+- [x] Test with a sample set of "Recycled" leads in the database.
+- [x] Verify leads are correctly assigned to the right agents in GHL and the `assignments` table is updated.
 
 ### 2.4 Workflow C: The Real-Time Referee
 - [ ] Build the webhook-triggered workflow logic to handle the "Win" and "Surrender" conditions.
