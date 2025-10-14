@@ -59,11 +59,11 @@ This roadmap is divided into three major phases: **Foundation**, **Automation Bu
 - [x] Verify leads are correctly assigned to the right agents in GHL and the `assignments` table is updated.
 
 ### 2.4 Workflow C: The Real-Time Referee
-- [ ] Build the webhook-triggered workflow logic to handle the "Win" and "Surrender" conditions.
-- [ ] **Test "Win" Condition:** Move a test lead to "Pre-Booking" in one GHL account.
-- [ ] Verify the competing lead in another GHL account is automatically moved to "Lost" with the correct system note.
-- [ ] **Test "Surrender" Condition:** Manually move a test lead to "Lost."
-- [ ] Verify the lead is correctly updated in the Master DB and made available for the next dispatch.
+- [x] Build the webhook-triggered workflow logic to handle the "Win" and "Surrender" conditions.
+- [x] **Test "Win" Condition:** Move a test lead to "Pre-Booking" in one GHL account.
+- [x] Verify the competing lead in another GHL account is automatically moved to "Lost" with the correct system note.
+- [x] **Test "Surrender" Condition:** Manually move a test lead to "Lost."
+- [x] Verify the lead is correctly updated in the Master DB and made available for the next dispatch.
 
 ---
 ## Phase 3: Go-Live (Deployment) 🚀
