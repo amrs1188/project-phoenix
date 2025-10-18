@@ -118,17 +118,21 @@ To maintain high velocity, all active assignments adhere to strict, standardized
 ## Part 5: The Arena - GHL Configuration
 
 ### 5.1 The Sales Pipeline (11 Stages)
-* 1: New Lead
-* 2: Contacting
-* 3: Qualifying
-* 4: Pending
-* 5: Incomplete
-* 6: Joint-Loan
-* 7: **Pre-Booking (Win Stage)**
-* 8: Confirmed Booking
-* 9: Won - Confirmed Sales
-* 10: Lost
-* 11: Unqualified
+This 11-stage pipeline provides a granular view of the lead's journey.
+
+| Stage # | Stage Name | Purpose |
+| :--- | :--- | :--- |
+| 1 | **New Lead** | Freshly assigned leads land here. |
+| 2 | **Contacting** | Agent is actively attempting first contact. |
+| 3 | **Qualifying** | Active financial assessment and needs analysis. |
+| 4 | **Pending** | Lead has gone silent or is unresponsive. |
+| 5 | **Incomplete** | Lead is providing documents, but they are incomplete. |
+| 6 | **Joint-Loan** | A joint-loan application is being explored. |
+| 7 | **Pre-Booking** | **The "Win" stage.** Documents are complete and submitted to ERP. |
+| 8 | **Confirmed Booking**| ERP system has confirmed the booking. |
+| 9 | **Won - Confirmed Sales**| The final stage for a successful deal. |
+| 10 | **Lost** | Agent has manually lost the lead, or the system has closed it. |
+| 11 | **Unqualified** | Lead is deemed unqualified but may become qualified in the future. |
 
 ### 5.2 Essential GHL Automations (Per Sub-Account)
 * **Fresh Lead Capture & Notify:** Captures ads, tags, assigns locally, calls n8n Custom Webhook.
