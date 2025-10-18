@@ -61,7 +61,7 @@
 ### 2.4 Workflow C: The Real-Time Referee
 - [x] **C.1 - Build Trigger & Switch Logic:** Create the workflow with a Webhook trigger and a `Switch` node to route the logic based on the new pipeline stage.
 - [x] **C.2 - Build and Test the "Surrender" Path:** Build the Postgres `Update` node for when a lead is moved to "Lost" and test it.
-- [ ] **C.3 - Build the "Win" Path:** Build the more complex series of nodes that finds all competing agents and sends API calls to GHL to close out their opportunities.
+- [x] **C.3 - Build the "Win" Path:** Build the more complex series of nodes that finds all competing agents and sends API calls to GHL to close out their opportunities.
 - [ ] **C.4 - Perform Full End-to-End Test:** Manually move leads in GHL to test both the "Win" and "Surrender" conditions.
 
 ---
