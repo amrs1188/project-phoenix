@@ -32,9 +32,9 @@
     - [x] Create all required **Custom Fields** under the correct groups.
     - [x] Confirm the **"Allow Duplicate Contact"** setting is turned **OFF**.
 - [ ] **Internal Automations (Workflows):**
-    - [ ] Build the "Fresh Lead Capture & Notify" workflow.
-    - [ ] Build the series of "30-Day Cool Down" workflows (e.g., Qualifying -> Pending -> Lost).
-    - [ ] Build the "Notify n8n Referee on Stage Change" trigger/workflow.
+    - [x] Build the "Fresh Lead Capture & Notify" workflow.
+    - [x] Build the series of "30-Day Cool Down" workflows (e.g., Qualifying -> Pending -> Lost).
+    - [x] Build the "Notify n8n Referee on Stage Change" trigger/workflow.
 
 ---
 ## Phase 2: Automation Build (Development) 🧠
@@ -59,8 +59,8 @@
 - [x] **B.5 - Perform Full End-to-End Test:** Manually create test data and execute the full workflow to verify a lead is correctly assigned to an available agent in GHL.
 
 ### 2.4 Workflow C: The Real-Time Referee
-- [ ] **C.1 - Build Trigger & Switch Logic:** Create the workflow with a Webhook trigger and a `Switch` node to route the logic based on the new pipeline stage.
-- [ ] **C.2 - Build and Test the "Surrender" Path:** Build the Postgres `Update` node for when a lead is moved to "Lost" and test it.
+- [x] **C.1 - Build Trigger & Switch Logic:** Create the workflow with a Webhook trigger and a `Switch` node to route the logic based on the new pipeline stage.
+- [x] **C.2 - Build and Test the "Surrender" Path:** Build the Postgres `Update` node for when a lead is moved to "Lost" and test it.
 - [ ] **C.3 - Build the "Win" Path:** Build the more complex series of nodes that finds all competing agents and sends API calls to GHL to close out their opportunities.
 - [ ] **C.4 - Perform Full End-to-End Test:** Manually move leads in GHL to test both the "Win" and "Surrender" conditions.
 
