@@ -55,8 +55,8 @@
 - [x] **B.1 - Build the "Information Gathering" Path:** Create the workflow with a Schedule trigger and the three Postgres nodes that get the list of available leads, find the correct team, and get the team's agent roster.
 - [x] **B.2 - Build the "Intelligent Assignment Loop":** Add the logic (Postgres and IF nodes) that loops through the agent roster and performs the "History Check."
 - [x] **B.3 - Add the "Capacity Check":** Add an HTTP Request node inside the loop to make an API call to GHL to check the agent's current lead count.
-- [] **B.4 - Build the "Delivery" Actions:** Add the final nodes that create the contact in GHL via API and create the new `assignments` record in the database.
-- [ ] **B.5 - Perform Full End-to-End Test:** Manually create test data and execute the full workflow to verify a lead is correctly assigned to an available agent in GHL.
+- [x] **B.4 - Build the "Delivery" Actions:** Add the final nodes that create the contact in GHL via API and create the new `assignments` record in the database.
+- [x] **B.5 - Perform Full End-to-End Test:** Manually create test data and execute the full workflow to verify a lead is correctly assigned to an available agent in GHL.
 
 ### 2.4 Workflow C: The Real-Time Referee
 - [ ] **C.1 - Build Trigger & Switch Logic:** Create the workflow with a Webhook trigger and a `Switch` node to route the logic based on the new pipeline stage.
