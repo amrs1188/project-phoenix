@@ -48,16 +48,16 @@
 - [x] **A.4 - Perform Full End-to-End Test:** Verified correct data creation in DB.
 
 ### 2.2 Workflow D: The Timer & Status Janitor
-- [ ] **D.1 - Build "Find Overdue" Logic:** Schedule trigger + Postgres `Execute Query` finds expired assignments, joining `master_contacts` to get `lead_type`.
-- [ ] **D.2 - Build Conditional Logic:** Add `IF` node (`CheckLeadType`) branching based on `lead_type`.
-- [ ] **D.3 - Build "Flag for Local Recycle" Path:** On 'Fresh' path, add Postgres `Update` node (`FlagForLocalRecycle`) to set `needs_local_recycle=true` in `master_contacts`.
-- [ ] **D.4 - Build "Set Global Priority" Path:** On 'Recycle' path, add Postgres `Update` node (`SetGlobalPriority`) to set `priority_level` (1, 2, or 3 based on stage) in `master_contacts`.
-- [ ] **D.5 - Build "Close Assignment" Logic:** Add final Postgres `Update` node (`CloseExpiredAssignment`) after the IF to set `status='Lost'` in `assignments`.
-- [ ] **D.6 - Perform Full End-to-End Test:** Test with both Fresh and Recycle leads, verifying correct flags/priorities are set and assignments closed.
+- [x] **D.1 - Build "Find Overdue" Logic:** Schedule trigger + Postgres `Execute Query` finds expired assignments, joining `master_contacts` to get `lead_type`.
+- [x] **D.2 - Build Conditional Logic:** Add `IF` node (`CheckLeadType`) branching based on `lead_type`.
+- [x] **D.3 - Build "Flag for Local Recycle" Path:** On 'Fresh' path, add Postgres `Update` node (`FlagForLocalRecycle`) to set `needs_local_recycle=true` in `master_contacts`.
+- [x] **D.4 - Build "Set Global Priority" Path:** On 'Recycle' path, add Postgres `Update` node (`SetGlobalPriority`) to set `priority_level` (1, 2, or 3 based on stage) in `master_contacts`.
+- [x] **D.5 - Build "Close Assignment" Logic:** Add final Postgres `Update` node (`CloseExpiredAssignment`) after the IF to set `status='Lost'` in `assignments`.
+- [x] **D.6 - Perform Full End-to-End Test:** Test with both Fresh and Recycle leads, verifying correct flags/priorities are set and assignments closed.
 
 ### 2.3 Workflow B: The Morning Dispatch
-- [ ] **B.1 - Build Initial Setup:** Schedule trigger. *(New)* Add step to initialize/reset daily quota counters.
-- [ ] **B.2 - Build Local Recycle Logic:** Add Postgres `Select` to find leads with `needs_local_recycle=true`. Loop through them: find next local agent (checking history), assign if found (using **Delivery Actions**), OR transition to global (update `lead_type`, set `priority_level=2`) if no local agents left.
+- [x] **B.1 - Build Initial Setup:** Schedule trigger. *(New)* Add step to initialize/reset daily quota counters.
+- [x] **B.2 - Build Local Recycle Logic:** Add Postgres `Select` to find leads with `needs_local_recycle=true`. Loop through them: find next local agent (checking history), assign if found (using **Delivery Actions**), OR transition to global (update `lead_type`, set `priority_level=2`) if no local agents left.
 - [ ] **B.3 - Build Global Recycle - Info Gathering:** Add Postgres `Execute Query` to get leads with `priority_level` (P1>P2>P3). Loop through them: find team, get agent roster.
 - [ ] **B.4 - Build Global Recycle - Intelligent Loop:** Loop through agents: Check **Quota** (new logic needed), check History, check Capacity (using **HTTP Request** with dynamic auth via `ghl_configs` lookup).
 - [ ] **B.5 - Build Delivery Actions:** Add nodes: `GetGHLConfigs` (Postgres Select), `CreateContactInGHL` (HTTP POST), `CreateOpportunityInGHL` (HTTP POST), `CreateAssignmentRecord` (Postgres Insert calculating correct timer), `UpdateMasterContact` (Postgres Update to remove priority), *(New)* Increment agent quota counter, `StopLoopForThisLead` (NoOp - Execute Once).
